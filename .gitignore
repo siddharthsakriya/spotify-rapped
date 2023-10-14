@@ -2,4 +2,4 @@
 *.env.local
 .myenv/
 .venv
-__pycache/
+__pycache__/

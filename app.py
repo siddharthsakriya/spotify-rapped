@@ -12,8 +12,8 @@ credentials = f"{CLIENT_ID}:{CLIENT_SECRET}"
 base64_encoded_client_credentials = base64.b64encode(credentials.encode()).decode()
 
 @app.route('/')
-def hello():
-    return '<h1>hello world</h1>'
+def home():
+    return render_template('base.html')
 
 @app.route('/login')
 def login():
@@ -40,7 +40,6 @@ def callback():
     else:
         return 'Authentication failed.'
 
-
 @app.route('/my_playlists')
 def my_playlists():
     access_token = session.get('access_token')
@@ -53,7 +52,7 @@ def my_playlists():
     if response.status_code == 200:
         playlists = response.json()
         print(playlists)
-        return render_template('base.html', playlists=playlists['items'])
+        return "<h1>hi</h1>"
     else:
         return "<h1>error</h1>"
 
