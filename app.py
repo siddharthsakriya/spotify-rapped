@@ -1,5 +1,5 @@
 import base64
-from flask import Flask, jsonify, request, redirect, session
+from flask import Flask, request, redirect, session, render_template
 import requests
 
 app = Flask(__name__)
@@ -7,7 +7,7 @@ app.secret_key = 'your_secret_key'
 
 CLIENT_ID = '36aafcd436fd4b5696fa262f0cbc4d3c'
 CLIENT_SECRET = '33a0fe4a229d4bc599b2c0f9ab59370b'
-REDIRECT_URI = 'http://127.0.0.1:8000/callback'
+REDIRECT_URI = 'http://127.0.0.1:5000/callback'
 credentials = f"{CLIENT_ID}:{CLIENT_SECRET}"
 base64_encoded_client_credentials = base64.b64encode(credentials.encode()).decode()
 
@@ -40,9 +40,22 @@ def callback():
     else:
         return 'Authentication failed.'
 
+
 @app.route('/my_playlists')
 def my_playlists():
-    return '<h1>SUCCESS</h1>'
+    access_token = session.get('access_token')
+    if not access_token:
+        return redirect('/login')
+
+    headers = {'Authorization': f'Bearer {access_token}'}
+    response = requests.get('https://api.spotify.com/v1/me/playlists', headers=headers)
+
+    if response.status_code == 200:
+        playlists = response.json()
+        print(playlists)
+        return render_template('base.html', playlists=playlists['items'])
+    else:
+        return "<h1>error</h1>"
 
 if __name__ == '__main__':
-    app.run(debug=True, port = 8000)
+    app.run(debug=True, port = 5000)

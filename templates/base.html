@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Spotify Playlists</title>
+</head>
+<body>
+    <h1>My Spotify Playlists</h1>
+    <ul>
+        {% for playlist in playlists %}
+            <li>
+                <h3>{{ playlist.name }}</h3>
+                <p>Owner: {{ playlist.owner.display_name }}</p>
+                <p>Total Tracks: {{ playlist.tracks.total }}</p>
+                <img src="{{ playlist.images[0].url }}" alt="{{ playlist.name }} Image">
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

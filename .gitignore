@@ -1,4 +1,5 @@
 .env
 *.env.local
-.venv/
+.myenv/
+.venv
 __pycache/
