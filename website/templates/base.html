@@ -1,16 +1,47 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="dist/output.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Base Template</title>
+    <link href="{{url_for('static',filename='css/main.css')}}" rel="stylesheet">
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 </head>
-<body class="bg">
-  <h1>
-    Hello world!
-  </h1>
-<button>
-  Save changes
-</button>
+<body class="bg-spotify-green">
+    <nav class="p-5 bg-white shadow md:flex md:items-center md:justify-between">
+        <div class="flex justify-between items-center">
+            <span class="text-2xl font-[sans-serif] hover:font-bold">
+                <img class="h-10 inline" src = "../static/images/spotify-svgrepo-com.svg" alt="no image available">
+                WrappedWhenever
+            </span>
+            <span class="text-3xl cursor-pointer mx-2 md:hidden block">
+                <ion-icon name="menu" onclick="Menu(this)"></ion-icon>
+            </span>
+        </div>
+        <ul class="md:flex md:items-center z-[-1] md:z-auto md:static absolute bg-white w-full left-0 md:w-auto md:py-0
+        py-4 md:pl-0 pl-4 md:opacity-100 opacity-0 top-[-400px] transition-all ease-in duration-500">
+            <li class="mx-4 my-6 md:my-0">
+                <a href="#" class = "text-xl hover:text-spotify-green"> Artists </a>
+            </li>
+            <li class="mx-4 my-6 md:my-0">
+                <a href="#" class = "text-xl hover:text-spotify-green"> Songs </a>
+            </li>
+            <li class="mx-4 my-6 md:my-0">
+                <a href="#" class = "text-xl hover:text-spotify-green"> Playlist Creator </a>
+            </li>
+            <button class="bg-spotify-green text-white font-[sans-serif] duration-500 px-6 py-2 mx-4 hover:bg-black rounded">
+                Login
+            </button>
+        </ul>
+    </nav>
+
+    <script>
+        function Menu(e){
+            let list = document.querySelector('ul')
+            e.name === 'menu' ? (e.name = "close", list.classList.add('top-[60px]'), list.classList.add('opacity-100')
+            ):( e.name = "menu", list.classList.remove('top-[60px]'), list.classList.remove('opacity-100'))
+        }
+    </script>
 </body>
 </html>

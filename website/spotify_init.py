@@ -37,7 +37,7 @@ def callback():
         return redirect('/my_playlists')
     else:
         return 'Authentication failed.'
-    
+
 @spotify_init.route('/my_playlists')
 def my_playlists():
     access_token = session.get('access_token')
