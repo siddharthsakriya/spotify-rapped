@@ -2,4 +2,9 @@
 *.env.local
 .myenv/
 .venv
-__pycache/
+__pycache__/
+package.json
+package-lock.json
+tailwind.config.js
+venv
+node_modules
