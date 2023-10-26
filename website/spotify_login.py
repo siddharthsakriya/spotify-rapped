@@ -1,26 +1,30 @@
 import base64
-from flask import request, redirect, session, render_template, Blueprint
+from flask import request, redirect, session, render_template, Blueprint, g
 import requests
 
-spotify_init = Blueprint('spotify_init', __name__)
+spotify_login = Blueprint('spotify_login', __name__)
 
 CLIENT_ID = '36aafcd436fd4b5696fa262f0cbc4d3c'
-CLIENT_SECRET = '33a0fe4a229d4bc599b2c0f9ab59370b'
+CLIENT_SECRET = '2f8abf7c56f14ce7bd40021beb4b539c'
 REDIRECT_URI = 'http://127.0.0.1:5000/callback'
 credentials = f"{CLIENT_ID}:{CLIENT_SECRET}"
 base64_encoded_client_credentials = base64.b64encode(credentials.encode()).decode()
 
-@spotify_init.route('/')
+
+@spotify_login.route('/')
 def home():
     return render_template('base.html')
 
-@spotify_init.route('/login')
+
+@spotify_login.route('/login')
 def login():
     # Construct the Spotify authorization URL
-    auth_url = f"https://accounts.spotify.com/authorize?client_id={CLIENT_ID}&response_type=code&redirect_uri={REDIRECT_URI}&scope=user-library-read"
+    auth_url = (f"https://accounts.spotify.com/authorize?client_id={CLIENT_ID}&response_type=code&redirect_uri="
+                f"{REDIRECT_URI}&scope=user-library-read")
     return redirect(auth_url)
 
-@spotify_init.route('/callback')
+
+@spotify_login.route('/callback')
 def callback():
     code = request.args.get('code')
     token_response = requests.post('https://accounts.spotify.com/api/token', data={
@@ -38,18 +42,20 @@ def callback():
     else:
         return 'Authentication failed.'
 
-@spotify_init.route('/my_playlists')
+
+@spotify_login.route('/my_playlists')
 def my_playlists():
     access_token = session.get('access_token')
     if not access_token:
         return redirect('/login')
 
     headers = {'Authorization': f'Bearer {access_token}'}
-    response = requests.get('https://api.spotify.com/v1/me/playlists', headers=headers)
+    response = requests.get('https://api.spotify.com/v1/me/playlists', headers =headers)
 
     if response.status_code == 200:
         playlists = response.json()
         print(playlists)
-        return "<h1>hi</h1>"
+        g.access_token = access_token
+        return render_template('home.html')
     else:
         return "<h1>error</h1>"
